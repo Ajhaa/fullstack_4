@@ -4,6 +4,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const creds = require('./creds')
 
 const Blog = mongoose.model('Blog', {
   title: String,
@@ -12,12 +13,13 @@ const Blog = mongoose.model('Blog', {
   likes: Number
 })
 
+
 module.exports = Blog
 
 app.use(cors())
 app.use(bodyParser.json())
 
-const mongoUrl = 'mongodb://localhost/bloglist'
+const mongoUrl = `mongodb://${creds.user}:${creds.pass}@ds223578.mlab.com:23578/atte-fullstack`
 mongoose.connect(mongoUrl)
 mongoose.Promise = global.Promise
 

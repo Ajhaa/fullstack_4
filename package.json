@@ -1,0 +1,29 @@
+{
+  "name": "fullstack_4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "watch": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ajhaa/fullstack_4.git"
+  },
+  "author": "Atte Haarni",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ajhaa/fullstack_4/issues"
+  },
+  "homepage": "https://github.com/Ajhaa/fullstack_4#readme",
+  "devDependencies": {
+    "nodemon": "^1.15.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "mongoose": "^5.0.7"
+  }
+}
