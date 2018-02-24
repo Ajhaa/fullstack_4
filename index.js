@@ -4,11 +4,13 @@ const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
-const creds = require('./creds')
 const Blog = require('./models/blog')
 const blogsRouter = require('./controllers/blogs')
 
-const mongoUrl = `mongodb://${creds.user}:${creds.pass}@ds223578.mlab.com:23578/atte-fullstack`
+if (process.env.NODE_ENV !== 'production'){
+  require('dotenv').config()
+}
+const mongoUrl = process.env.MONGODB_URI
 mongoose
   .connect(mongoUrl)
   .then (() => {
