@@ -16,11 +16,12 @@ const initialBlogs = [
 ]
 const format = (blog) => {
   return {
+    id: blog._id,
     title: blog.title,
     author: blog.author,
     url: blog.url,
     likes: blog.likes,
-    id: blog._id
+
   }
 }
 

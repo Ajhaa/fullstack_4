@@ -114,6 +114,58 @@ describe('initially some blogs in database', () => {
       expect(blogAfter.length).toBe(blogBefore.length)
     })
   })
+
+  describe('DELETE blog', () => {
+    let added
+    beforeAll(async () => {
+      await Blog.remove({})
+      added = new Blog( {
+        title: "DELETE",
+        author: "eiole",
+        url: "http://DELETE",
+        likes: 0
+      })
+      await added.save()
+    })
+    test('delete deletes blog', async () => {
+      const blogsBefore = await blogsInDb()
+
+      await api
+        .delete(`/api/blogs/${added._id}`)
+        .expect(204)
+
+      const blogsAfter = await blogsInDb()
+      blogsAfter.forEach(b => delete b.id)
+      expect(blogsAfter).not.toContainEqual(added)
+      expect(blogsAfter.length).toBe(blogsBefore.length - 1)
+    })
+  })
+
+  describe('update single blog', () => {
+    let added
+    beforeAll(async () => {
+      added = new Blog( {
+        title: "UPDATE THIS",
+        author: "eiole",
+        url: "http://UPDATE",
+        likes: 0
+      })
+      await added.save()
+    })
+    test('updating blog updates correctly', async () => {
+      const blogsBefore = await blogsInDb()
+
+      const updated = {...added._doc, likes: 5}
+
+      await api
+        .put(`/api/blogs/${added._id}`)
+        .send(updated)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+      const blogsAfter = await blogsInDb()
+      expect(blogsAfter.length).toBe(blogsBefore.length)
+    })
+  })
 })
 
 afterAll(() => {
