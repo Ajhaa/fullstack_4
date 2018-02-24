@@ -1,6 +1,6 @@
 const listHelper = require('../utils/list_helper')
 
-describe('list_helpers', () => {
+describe.skip('list_helpers', () => {
   const listWithOneBlog = [
     {
       _id: '5a422aa71b54a676234d17f8',
