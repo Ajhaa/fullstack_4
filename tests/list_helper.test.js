@@ -1,6 +1,6 @@
 const listHelper = require('../utils/list_helper')
 
-describe('favorite blog', () => {
+describe('list_helpers', () => {
   const listWithOneBlog = [
     {
       _id: '5a422aa71b54a676234d17f8',
@@ -56,29 +56,59 @@ describe('favorite blog', () => {
       __v: 0
     }
   ]
-  const exp = {
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
-    likes: 5,
-  }
 
-  test('works with one blog', () => {
-    const result = listHelper.favoriteBlog(listWithOneBlog)
-    expect(result).toEqual(exp)
+  test('dummy is called', () => {
+    const blogs = []
+
+    const result = listHelper.dummy(blogs)
+    expect(result).toBe(1)
   })
 
-  test('works with two blogs', () => {
-    const result = listHelper.favoriteBlog(listWithTwoBlogs)
-    expect(result).toEqual(exp)
+  describe('total likes', () => {
+    test('works with one blog', () => {
+      const result = listHelper.totalLikes(listWithOneBlog)
+      expect(result).toBe(5)
+    })
+
+    test('works with two elements in list', () => {
+      const result = listHelper.totalLikes(listWithTwoBlogs)
+      expect(result).toBe(8)
+    })
+
+    test('works with empty list', () => {
+      const result = listHelper.totalLikes([])
+      expect(result).toBe(0)
+    })
+
+
   })
 
-  test('works with equal amount of likes on two blogs', () => {
-    const result = listHelper.favoriteBlog(listWithEqualLikes)
-    expect(result).toEqual(exp)
+  describe('favorite blog', () => {
+    const exp = {
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      likes: 5,
+    }
+
+    test('works with one blog', () => {
+      const result = listHelper.favoriteBlog(listWithOneBlog)
+      expect(result).toEqual(exp)
+    })
+
+    test('works with two blogs', () => {
+      const result = listHelper.favoriteBlog(listWithTwoBlogs)
+      expect(result).toEqual(exp)
+    })
+
+    test('works with equal amount of likes on two blogs', () => {
+      const result = listHelper.favoriteBlog(listWithEqualLikes)
+      expect(result).toEqual(exp)
+    })
+
+    test('works with no blogs', () => {
+      const result = listHelper.favoriteBlog([])
+      expect(result).toBe(null)
+    })
   })
 
-  test('works with no blogs', () => {
-    const result = listHelper.favoriteBlog([])
-    expect(result).toBe(null)
-  })
 })
