@@ -2,15 +2,37 @@ const supertest = require('supertest')
 const { app, server } = require('../index')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const { initialBlogs, blogsInDb } = require('./test_helper')
 
 describe('initially some blogs in database', () => {
-
+  let loginToken
   beforeAll(async () => {
     await Blog.remove({})
-
+    await User.remove({})
     const blogObjects = initialBlogs.map(b => new Blog(b))
     await Promise.all(blogObjects.map(b => b.save()))
+
+    const testUser = {
+      user: "testi",
+      name: "testaaja",
+      adult: true,
+      password: "taikasana"
+    }
+
+    const loginCreds = {
+      user: testUser.user,
+      password: testUser.password
+    }
+    await api
+      .post('/api/users')
+      .send(testUser)
+
+
+    const loginData = await api
+      .post('/api/login')
+      .send(loginCreds)
+    loginToken = loginData.body.token
   })
 
   describe('GET blogs', () => {
@@ -48,10 +70,16 @@ describe('initially some blogs in database', () => {
         url: 'localhost 3001',
         likes: 0
       }
-
+      const options = {
+        headers: {
+          Authorization: loginToken
+        }
+      }
+      const h = 'bearer ' + loginToken
       await api
         .post('/api/blogs')
         .send(newBlog)
+        .set('Authorization', h)
         .expect(201)
         .expect('Content-Type', /application\/json/)
 
@@ -73,6 +101,7 @@ describe('initially some blogs in database', () => {
       await api
         .post('/api/blogs')
         .send(newBlog)
+        .set('Authorization', ('bearer ' + loginToken))
         .expect(201)
         .expect('Content-Type', /application\/json/)
 
@@ -92,6 +121,7 @@ describe('initially some blogs in database', () => {
       await api
         .post('/api/blogs')
         .send(newBlog)
+        .set('Authorization', ('bearer ' + loginToken))
         .expect(400)
 
       const blogAfter = await blogsInDb()
@@ -107,6 +137,7 @@ describe('initially some blogs in database', () => {
       await api
         .post('/api/blogs')
         .send(newBlog)
+        .set('Authorization', ('bearer ' + loginToken))
         .expect(400)
 
       const blogAfter = await blogsInDb()

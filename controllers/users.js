@@ -2,6 +2,12 @@ const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 
+
+usersRouter.get('/debug', async (req, res) => {
+  await User.remove({})
+  res.status(200)
+})
+
 usersRouter.post('/', async (request, response) => {
   const body = request.body
 
@@ -24,7 +30,7 @@ usersRouter.post('/', async (request, response) => {
     adult: isAdult,
     passwordHash
   })
-
+  console.log('User',user)
   const saved = await user.save()
   response.status(201).json(saved)
 })
