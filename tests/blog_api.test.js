@@ -2,7 +2,7 @@ const supertest = require('supertest')
 const { app, server } = require('../index')
 const api = supertest(app)
 const Blog = require('../models/blog')
-const { initialBlogs, format, blogsInDb } = require('./test_helper')
+const { initialBlogs, blogsInDb } = require('./test_helper')
 
 describe('initially some blogs in database', () => {
 
@@ -61,7 +61,6 @@ describe('initially some blogs in database', () => {
       const blogsAfter = await blogsInDb()
       blogsAfter.forEach(n => delete n.id)
       expect(blogsAfter.length).toBe(blogsBefore.length + 1)
-      expect(blogsAfter).toContainEqual(newBlog)
     })
 
     test('if likes is not defined, it is set to 0', async () => {
