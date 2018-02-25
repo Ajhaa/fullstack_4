@@ -1,10 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWxrIiwiaWQiOiI1YTkyYzQ1ZWUzYmM0Yzc5ZTM5MWYyZTgiLCJpYXQiOjE1MTk1NjgwNjR9.kzsx9tEnebhN8Bb6pVfTKGtFsbyaJFaWcYC55RUH1j4
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYXNkYXNkIiwiaWQiOiI1YTkyZDQxMTVhZDMwZTBlYWI4NDQwYjQiLCJpYXQiOjE1MTk1ODg2NjN9.Vv7lDfCy3NWsV9VNH-PKCzktDHljdS-YK8bt2j6YzrE
 
 {
-  "title": "Matin 1",
-  "author": "Matti",
+  "title": "poistettava",
+  "author": "atte",
   "url": "localhost 3001",
   "likes": 10
 }

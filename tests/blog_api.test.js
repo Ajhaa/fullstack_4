@@ -7,7 +7,8 @@ const { initialBlogs, blogsInDb } = require('./test_helper')
 
 describe('initially some blogs in database', () => {
   let loginToken
-  beforeAll(async () => {
+  let user_id
+  beforeEach(async () => {
     await Blog.remove({})
     await User.remove({})
     const blogObjects = initialBlogs.map(b => new Blog(b))
@@ -24,11 +25,11 @@ describe('initially some blogs in database', () => {
       user: testUser.user,
       password: testUser.password
     }
-    await api
+    const respUser = await api
       .post('/api/users')
       .send(testUser)
 
-
+    user_id = respUser.body._id
     const loginData = await api
       .post('/api/login')
       .send(loginCreds)
@@ -70,11 +71,7 @@ describe('initially some blogs in database', () => {
         url: 'localhost 3001',
         likes: 0
       }
-      const options = {
-        headers: {
-          Authorization: loginToken
-        }
-      }
+
       const h = 'bearer ' + loginToken
       await api
         .post('/api/blogs')
@@ -153,7 +150,8 @@ describe('initially some blogs in database', () => {
         title: "DELETE",
         author: "eiole",
         url: "http://DELETE",
-        likes: 0
+        likes: 0,
+        user: user_id
       })
       await added.save()
     })
@@ -162,6 +160,7 @@ describe('initially some blogs in database', () => {
 
       await api
         .delete(`/api/blogs/${added._id}`)
+        .set('Authorization', ('bearer ' + loginToken))
         .expect(204)
 
       const blogsAfter = await blogsInDb()

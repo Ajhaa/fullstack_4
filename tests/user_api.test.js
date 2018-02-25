@@ -6,10 +6,10 @@ const { usersInDb } = require('./test_helper')
 const bcrypt = require
 
 describe('initally some users in database', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     await User.remove({})
     const user = new User({
-      user: "debugg",
+      user: "moist",
       name: "lukkai",
       adult: true,
       password: "salainen"
@@ -40,7 +40,7 @@ describe('initally some users in database', () => {
     test('no duplicate usernames allowed', async () => {
       const initialUsers = await usersInDb()
       const newUser = {
-        user: "debugg",
+        user: "moist",
         name: "laatikko",
         adult: true,
         password: "supersala"
@@ -66,15 +66,15 @@ describe('initally some users in database', () => {
         .post('/api/users')
         .send(newUser)
         .expect(400)
-
       const usersAfter = await usersInDb()
+
       expect(usersAfter.length).toBe(initialUsers.length)
     })
 
     test('if adult not defined, set to true', async () => {
       await User.remove({})
       const newUser = {
-        user: "uniiq",
+        user: "lern",
         name: "laatikko",
         password: "lynkers"
       }

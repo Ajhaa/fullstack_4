@@ -3,14 +3,6 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
-const getTokenFrom = (request) => {
-  const auth = request.get('authorization')
-  if (auth && auth.toLowerCase().startsWith('bearer ')) {
-    return auth.substring(7)
-  }
-  return null
-}
-
 blogsRouter.get('/debug', async (req, res) => {
   await Blog.remove({})
   res.status(200)
@@ -27,8 +19,8 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
   try {
-    const token = getTokenFrom(request)
-    const decodedToken = jwt.verify(token, process.env.SECRET)
+    const token = request.token
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
     if (!token || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
@@ -85,11 +77,30 @@ blogsRouter.put('/:id', async (request, response) => {
 
 blogsRouter.delete('/:id', async (request, response) => {
   try {
+    const token = request.token
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+    if (!token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
+
+    const user = await User.findById(decodedToken.id)
+
+    const blog = await Blog.findById(request.params.id)
+
+    if (blog.user.toString() !== user._id.toString()) {
+      return response.status(401).json({ error: 'invalid ownership' })
+    }
+
     await Blog.findByIdAndRemove(request.params.id)
     response.status(204).end()
   } catch (exception) {
-    console.log(exception)
-    response.status(400).send({ error: 'malformatted id' })
+    if (exception.name === 'JsonWebTokenError') {
+      response.status(401).json({ error: exception.message })
+    } else {
+      console.log(exception)
+      response.status(400).send({ error: 'malformatted id' })
+    }
   }
 })
 
