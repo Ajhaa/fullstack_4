@@ -1,9 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWxrIiwiaWQiOiI1YTkyYzQ1ZWUzYmM0Yzc5ZTM5MWYyZTgiLCJpYXQiOjE1MTk1NjgwNjR9.kzsx9tEnebhN8Bb6pVfTKGtFsbyaJFaWcYC55RUH1j4
 
 {
-  "title": "Ohja",
-  "author": "Arto",
+  "title": "Matin 1",
+  "author": "Matti",
   "url": "localhost 3001",
-  "likes": 0
+  "likes": 10
 }

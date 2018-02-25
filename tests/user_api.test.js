@@ -6,7 +6,7 @@ const { usersInDb } = require('./test_helper')
 const bcrypt = require
 
 describe('initally some users in database', () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     await User.remove({})
     const user = new User({
       user: "debugg",
@@ -107,7 +107,9 @@ describe('initally some users in database', () => {
     })
 
   })
+  afterAll(() => {
+    server.close()
+  })
 })
-afterAll(() => {
-  server.close()
-})
+
+

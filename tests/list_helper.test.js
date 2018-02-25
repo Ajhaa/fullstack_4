@@ -1,6 +1,6 @@
 const listHelper = require('../utils/list_helper')
 
-describe.skip('list_helpers', () => {
+describe('list_helpers', () => {
   const listWithOneBlog = [
     {
       _id: '5a422aa71b54a676234d17f8',
@@ -23,7 +23,7 @@ describe.skip('list_helpers', () => {
     },
     {
       title: 'Testiblogi3',
-      autho: 'Atte',
+      author: 'Atte',
       url: 'localhost 3001',
       likes: 3,
       _id: '5a91401f7c7b814be09d13f7',
@@ -41,7 +41,7 @@ describe.skip('list_helpers', () => {
     },
     {
       title: 'Testiblogi3',
-      autho: 'Atte',
+      author: 'Atte',
       url: 'localhost 3001',
       likes: 3,
       _id: '5a91401f7c7b814be09d13f7',
@@ -49,7 +49,7 @@ describe.skip('list_helpers', () => {
     },
     {
       title: 'Testiblogi2',
-      autho: 'Tomppa',
+      author: 'Atte',
       url: 'localhost 3001',
       likes: 5,
       _id: '5a91401f7c7b814gh09s13f7',
@@ -111,4 +111,44 @@ describe.skip('list_helpers', () => {
     })
   })
 
+  describe('most blogs', () => {
+    test('works with no blogs', () => {
+      const most = listHelper.mostBlogs([])
+      expect(most).toBe(null)
+    })
+    test('works with one blog', () => {
+      const most = listHelper.mostBlogs(listWithOneBlog)
+      expect(most).toEqual({ author: "Edsger W. Dijkstra", blogs: 1 })
+    })
+
+    test('works with two blogs', () => {
+      const most = listHelper.mostBlogs(listWithTwoBlogs)
+      expect(most).toEqual({ author: "Edsger W. Dijkstra", blogs: 1 })
+    })
+    test('works with person who has two blogs', () => {
+      const most = listHelper.mostBlogs(listWithEqualLikes)
+      expect(most).toEqual({ author: "Atte", blogs: 2 })
+    })
+  })
+
+  describe('favorite author', () => {
+    test('works with no blogs', () => {
+      const most = listHelper.mostLikes([])
+      expect(most).toBe(null)
+    })
+
+    test('works with one blog', () => {
+      const most = listHelper.mostLikes(listWithOneBlog)
+      expect(most).toEqual({ author: "Edsger W. Dijkstra", likes: 5 })
+    })
+
+    test('works with two blogs', () => {
+      const most = listHelper.mostLikes(listWithTwoBlogs)
+      expect(most).toEqual({ author: "Edsger W. Dijkstra", likes: 5 })
+    })
+    test('works with person who has two blogs', () => {
+      const most = listHelper.mostLikes(listWithEqualLikes)
+      expect(most).toEqual({ author: "Atte", likes: 8 })
+    })
+  })
 })

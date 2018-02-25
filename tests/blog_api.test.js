@@ -196,8 +196,10 @@ describe('initially some blogs in database', () => {
       expect(blogsAfter.length).toBe(blogsBefore.length)
     })
   })
+  afterAll(() => {
+    server.close()
+  })
 })
 
-afterAll(() => {
-  server.close()
-})
+
+

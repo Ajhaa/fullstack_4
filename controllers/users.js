@@ -30,7 +30,7 @@ usersRouter.post('/', async (request, response) => {
     adult: isAdult,
     passwordHash
   })
-  console.log('User',user)
+
   const saved = await user.save()
   response.status(201).json(saved)
 })
